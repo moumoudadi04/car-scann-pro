@@ -3,10 +3,8 @@ workflows:
     name: Android Workflow
     environment:
       flutter: stable
-      vars:
-        PACKAGE_NAME: "com.example.car_scan_pro"
     scripts:
-      - name: Generate Android directory if missing
+      - name: Generate Android directory
         script: |
           if [ ! -d "android" ]; then
             flutter create . --platforms=android
