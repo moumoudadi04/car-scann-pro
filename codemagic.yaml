@@ -1,16 +1,16 @@
 workflows:
   android-workflow:
-    name: Android Workflow
+    name: Android APK
     environment:
       flutter: stable
     scripts:
-      - name: Generate Android directory
+      - name: Fix Android project
         script: |
-          if [ ! -d "android" ]; then
-            flutter create . --platforms=android
-          fi
+          rm -rf android
+          flutter create . --platforms=android
       - name: Build APK
         script: |
+          flutter pub get
           flutter build apk --debug
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
