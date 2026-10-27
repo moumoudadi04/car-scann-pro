@@ -202,7 +202,7 @@ class ErrorCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: Border.all(color: Colors.red.withOpacity(0.5)),
+        side: BorderSide(color: Colors.red.withOpacity(0.5)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -210,7 +210,7 @@ class ErrorCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.between,
+              MainAxisAlignment.spaceBetween
               children: [
                 Text(code, style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 16)),
                 IconButton(icon: const Icon(Icons.delete_sweep, color: Colors.orange), onPressed: () {}),
