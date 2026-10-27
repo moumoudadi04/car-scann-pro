@@ -210,12 +210,22 @@ class ErrorCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              MainAxisAlignment.spaceBetween
-              children: [
-                Text(code, style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 16)),
-                IconButton(icon: const Icon(Icons.delete_sweep, color: Colors.orange), onPressed: () {}),
-              ],
-            ),
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Text(
+      code,
+      style: const TextStyle(
+        color: Colors.redAccent,
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ),
+    ),
+    IconButton(
+      icon: const Icon(Icons.delete_sweep, color: Colors.orange),
+      onPressed: () {},
+    ),
+  ],
+),
             Text(title, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
             const SizedBox(height: 5),
             Text('السبب المتوقع: $cause', style: const TextStyle(color: Colors.grey, fontSize: 13)),
