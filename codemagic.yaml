@@ -1,0 +1,18 @@
+workflows:
+  android-workflow:
+    name: Android Workflow
+    environment:
+      flutter: stable
+      vars:
+        PACKAGE_NAME: "com.example.car_scan_pro"
+    scripts:
+      - name: Generate Android directory if missing
+        script: |
+          if [ ! -d "android" ]; then
+            flutter create . --platforms=android
+          fi
+      - name: Build APK
+        script: |
+          flutter build apk --debug
+    artifacts:
+      - build/app/outputs/flutter-apk/*.apk
