@@ -16,7 +16,7 @@ class CarScanProApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xFF121212),
-        primaryColor: const Color(0xFFFFD700),
+        primaryColor: const Color(0xFFFFD700), // لون ذهبي 3D فاخر
         colorScheme: ColorScheme.dark(
           primary: const Color(0xFFFFD700),
           secondary: const Color(0xFFFFA500),
@@ -30,9 +30,9 @@ class CarScanProApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('ar', ''),
-        Locale('fr', ''),
-        Locale('en', ''),
+        Locale('ar', ''), // العربية
+        Locale('fr', ''), // الفرنسية
+        Locale('en', ''), // الإنجليزية
       ],
       locale: const Locale('ar', ''),
       home: const HomeScreen(),
@@ -53,8 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = [
     const DashboardTab(),
     const DiagnosticsTab(),
-    const SensorsTab(),
-    const SettingsTab(),
+    const RenaultMasterTab(), // ميزة خاصة لـ رونو ماستار
+    const ConnectionTab(),    // قسم البلوتوث والواي فاي
   ];
 
   @override
@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Icon(Icons.directions_car, color: Color(0xFFFFD700)),
             SizedBox(width: 10),
             Text(
-              'Car Scan Pro',
+              'Car Scan Pro - Pro',
               style: TextStyle(
                 color: Color(0xFFFFD700),
                 fontWeight: FontWeight.bold,
@@ -89,16 +89,17 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'لوحة القيادة'),
-          BottomNavigationBarItem(icon: Icon(Icons.healing), label: 'فحص الأعطال'),
-          BottomNavigationBarItem(icon: Icon(Icons.show_chart), label: 'الحساسات'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'الإعدادات'),
+          BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'اللوحة'),
+          BottomNavigationBarItem(icon: Icon(Icons.healing), label: 'فحص عام'),
+          BottomNavigationBarItem(icon: Icon(Icons.car_repair), label: 'رونو ماستار'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings_input_antenna), label: 'الاتصال'),
         ],
       ),
     );
   }
 }
 
+// 1. لوحة القيادة الحية
 class DashboardTab extends StatelessWidget {
   const DashboardTab({super.key});
 
@@ -113,7 +114,7 @@ class DashboardTab extends StatelessWidget {
         children: const [
           DashboardCard(title: 'السرعة', value: '0 كم/س', icon: Icons.speed, color: Colors.blue),
           DashboardCard(title: 'حرارة المحرك', value: '90°C', icon: Icons.thermostat, color: Colors.orange),
-          DashboardCard(title: 'جهد البطارية', value: '12.6V', icon: Icons.battery_charging_full, color: Colors.green),
+          DashboardCard(title: 'جهد البطارية', value: '12.6V (تشحن)', icon: Icons.battery_charging_full, color: Colors.green),
           DashboardCard(title: 'مستوى الوقود', value: '75%', icon: Icons.local_gas_station, color: Colors.amber),
         ],
       ),
@@ -135,7 +136,7 @@ class DashboardCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF1E1E1E),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFFFD700).withOpacity(0.3)),
+        border: Border.all(color: const Color(0xFFFFD700).withOpacity(0.4)),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -144,13 +145,14 @@ class DashboardCard extends StatelessWidget {
           const SizedBox(height: 10),
           Text(title, style: const TextStyle(color: Colors.grey, fontSize: 14)),
           const SizedBox(height: 5),
-          Text(value, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+          Text(value, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
         ],
       ),
     );
   }
 }
 
+// 2. فحص الأخطاء العام مع الأكواد المميزة
 class DiagnosticsTab extends StatelessWidget {
   const DiagnosticsTab({super.key});
 
@@ -169,14 +171,14 @@ class DiagnosticsTab extends StatelessWidget {
             ),
             onPressed: () {},
             icon: const Icon(Icons.search),
-            label: const Text('بدء الفحص الشامل للأخطاء', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            label: const Text('بدء الفحص الشامل للأخطاء وإزالة الرمز', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
           ),
           const SizedBox(height: 20),
           Expanded(
             child: ListView(
               children: const [
-                ErrorCard(code: 'P0300', title: 'خطأ في احتراق الاسطوانة', cause: 'تلف في شمعات الاحتراق أو بخاخات الوقود.'),
-                ErrorCard(code: 'P0113', title: 'حساس حرارة الهواء الداخل مرتفع', cause: 'قطع في أسلاك الحساس.'),
+                ErrorCard(code: 'P0300', title: 'خطأ في احتراق الاسطوانة', cause: 'تلف في شمعات الاحتراق (Bujies) أو بخاخات الوقود.'),
+                ErrorCard(code: 'P0113', title: 'حساس حرارة الهواء الداخل مرتفع', cause: 'قطع في أسلاك الحساس أو تلف الحساس نفسه.'),
               ],
             ),
           ),
@@ -207,7 +209,13 @@ class ErrorCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(code, style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 16)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.between,
+              children: [
+                Text(code, style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 16)),
+                IconButton(icon: const Icon(Icons.delete_sweep, color: Colors.orange), onPressed: () {}),
+              ],
+            ),
             Text(title, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
             const SizedBox(height: 5),
             Text('السبب المتوقع: $cause', style: const TextStyle(color: Colors.grey, fontSize: 13)),
@@ -218,29 +226,59 @@ class ErrorCard extends StatelessWidget {
   }
 }
 
-class SensorsTab extends StatelessWidget {
-  const SensorsTab({super.key});
+// 3. قسم خاص لسيارة رونو ماستار (Renault Master)
+class RenaultMasterTab extends StatelessWidget {
+  const RenaultMasterTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('قراءات الحساسات وحقن الوقود المباشر تظهر هنا', style: TextStyle(color: Colors.grey)));
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ListView(
+        children: const [
+          Text('فحص تخصّصي: Renault Master (الدناصيت / ديزل dCi)', style: TextStyle(color: Color(0xFFFFD700), fontSize: 16, fontWeight: FontWeight.bold)),
+          SizedBox(height: 15),
+          ErrorCard(code: 'DF053', title: 'ضغط الوقود في مسار الحقن (Common Rail)', cause: 'مشكلة في مضخة الوقود عالية الضغط أو تسريب في البخاخات.'),
+          ErrorCard(code: 'DF025', title: 'شمعات التسخين (Preheating Plugs)', cause: 'تلف إحدى شمعات التسخين الخاصة بمحركات الديزل الباردة.'),
+        ],
+      ),
+    );
   }
 }
 
-class SettingsTab extends StatelessWidget {
-  const SettingsTab({super.key});
+// 4. تبويب الاتصال بالبلوتوث والواي فاي (Bluetooth & Wi-Fi OBD2)
+class ConnectionTab extends StatelessWidget {
+  const ConnectionTab({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: const [
-        ListTile(
-          leading: Icon(Icons.language, color: Color(0xFFFFD700)),
-          title: Text('لغة التطبيق'),
-          subtitle: Text('العربية / Français / English'),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          const ListTile(
+            leading: Icon(Icons.bluetooth, color: Color(0xFFFFD700), size: 30),
+            title: Text('اتصال البلوتوث (Bluetooth OBD2)', style: TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text('للإصدارات القياسية ELM327 Bluetooth'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFFD700), foregroundColor: Colors.black),
+            onPressed: () {},
+            child: const Text('بحث والاتصال عبر البلوتوث'),
+          ),
+          const Divider(height: 40, color: Colors.grey),
+          const ListTile(
+            leading: Icon(Icons.wifi, color: Color(0xFFFFD700), size: 30),
+            title: Text('اتصال الواي فاي (Wi-Fi OBD2)', style: TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text('أجهزة OBD2 التي تعمل عبر شبكة الـ Wi-Fi المحلية'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFFD700), foregroundColor: Colors.black),
+            onPressed: () {},
+            child: const Text('اتصال عبر شبكة الواي فاي (Wi-Fi)'),
+          ),
+        ],
+      ),
     );
   }
 }
